@@ -1,0 +1,28 @@
+/*
+Theme Name:     Houston Architectural Survey
+Description:    Child of Hayden
+Author:         Kevin Toy
+Template:       hayden
+
+(optional values you can add: Theme URI, Author URI, Version)
+*/
+
+@import url("../hayden/style.css");
+
+.home #wrap {
+padding-top: 135px !important;
+}
+
+#mainNav ul a {
+ color: #6a6a6a;
+ font-weight: normal;
+ font-size: 1em;
+}
+
+#mainNav ul li a:hover {
+ color: #969696; 
+}
+
+#mainNav ul li.current_page_item a {
+  color: #9fce66;
+}

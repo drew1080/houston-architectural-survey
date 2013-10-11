@@ -1,0 +1,11 @@
+[30-Sep-2013 21:43:39] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 21:43:52] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 21:54:48] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 22:08:12] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 22:08:21] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 22:11:04] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 22:11:47] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 22:12:16] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 22:14:09] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[30-Sep-2013 22:14:50] PHP Parse error:  syntax error, unexpected ')' in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/functions.php on line 14
+[02-Oct-2013 18:50:20] PHP Fatal error:  Call to a member function have_posts() on a non-object in /home6/wonderi4/public_html/has/wp-content/themes/houston-architectural-survey/part-surveys-home.php on line 31
