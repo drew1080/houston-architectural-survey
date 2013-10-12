@@ -26,3 +26,134 @@ padding-top: 135px !important;
 #mainNav ul li.current_page_item a {
   color: #9fce66;
 }
+
+#content.survey {
+	width: 100%;
+}
+
+#content #surveys li{
+	padding: 0;
+	background: none;		
+}
+
+.survey.small, .isotope-item{	
+	display: block;	
+	position: relative;	
+	float: left;	
+	margin: 0 0 30px 0;	
+	max-width: 350px;
+	height: auto !important;
+	padding-bottom: 0;	
+	text-align: center !important;
+	zoom: 1;
+	visibility: hidden;
+	float: left;
+	display: none;	
+}
+
+
+#content .survey.small img, .isotope-item img{	
+	max-width: 100% !important;
+	height: auto;	
+	-moz-transition-property: opacity;
+	-webkit-transition-property: opacity;
+	-o-transition-property: opacity;
+	transition-property: opacity;
+	-moz-transition-duration: 0.4s;
+	-webkit-transition-duration: 0.4s;
+	-o-transition-duration: 0.4s;
+	transition-duration: 0.4s;	
+}
+
+#content .survey.small p{
+	text-align: center;
+	font-size: .9em;
+}
+
+.survey.small .inside {	
+	text-align: center !important;
+	position: relative;
+	margin: 0 auto !important;
+}
+
+#content .survey.small a{
+	position: relative;
+	display: block;	
+	text-align: center;	
+	margin: 0 auto;
+	-webkit-backface-visibility: hidden;
+}
+
+#content .survey.small a:hover img{
+	opacity: .2;
+	position:relative;
+	-webkit-backface-visibility: hidden;
+}
+
+#content .survey.small a:hover .title{
+	opacity: 1;
+	top: 50%;
+	-webkit-backface-visibility: hidden;
+	
+}
+
+#content .survey.small .title {
+	font-size: 1em;
+	color: #fff;	
+	font-weight: bold;
+	text-align: center;	
+	margin-bottom: 10px;
+	display: block;
+	position: absolute;
+	top: 60%;	
+	margin: -20px auto 0 !important;	
+	width: 100%;
+	-moz-transition-property: all;
+	-webkit-transition-property: all;
+	-o-transition-property: all;
+	transition-property: all;
+	-moz-transition-duration: 0.5s;
+	-webkit-transition-duration: 0.5s;
+	-o-transition-duration: 0.5s;
+	transition-duration: 0.5s;
+	opacity: 0;
+}
+
+#content .survey.small .title span {	
+	display: inline-block;
+	padding: 10px;	
+	background: #000;
+	margin: 0 auto !important;	
+}
+
+#content.survey {
+	width: 100%;
+}
+
+.home .survey.small{
+	float: left;
+	width: 33%;
+	visibility: visible;
+}
+
+
+
+
+/* iPad Portrait */
+
+@media only screen and (max-width: 975px) {		
+
+	/*Surveys ------------------*/	
+	#content .survey.small .title {
+		font-size: .8em;
+	}
+}
+
+@media only screen and (max-width: 700px) {
+  /*Surveys ------------------*/		
+	
+	#content .survey.small .inside{			
+		display: inline-block;
+		margin: 0 auto 20px !important;				
+	}
+}

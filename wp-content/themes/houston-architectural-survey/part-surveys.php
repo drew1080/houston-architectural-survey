@@ -1,6 +1,6 @@
 <div id="surveys" class="clearfix">		
 				
-	<?php $page_skills = get_post_meta($post->ID, "_ttrust_page_skills", true); ?>
+	<?php $page_skills = get_post_meta($post->ID, "_ttrust_page_classifcations", true); ?>
 	
 	<?php if ($page_skills) : // if there are a limited number of skills set ?>
 		<?php $skill_slugs = ""; $skills = explode(",", $page_skills); ?>
@@ -12,7 +12,7 @@
 				<?php
 				$j=1;					  
 				foreach ($skills as $skill) {				
-					$skill = get_term_by( 'slug', trim(htmlentities($skill)), 'skill');
+					$skill = get_term_by( 'slug', trim(htmlentities($skill)), 'classifcations');
 					if($skill) {
 						$skill_slug = $skill->slug;				
 
@@ -29,7 +29,7 @@
 			<?php $skill_slugs = substr($skill_slugs, 0, strlen($skill_slugs)-1); ?>
 		<?php else: ?>
 			<?php $skill = $skills[0]; ?>
-			<?php $s = get_term_by( 'name', trim(htmlentities($skill)), 'skill'); ?>
+			<?php $s = get_term_by( 'name', trim(htmlentities($skill)), 'classifcations'); ?>
 			<?php if($s) { $skill_slugs = $s->slug; } ?>
 		<?php endif;		
 		
@@ -40,14 +40,14 @@
 			'post_type' => 'has_surveys',
 			'skill' => $skill_slugs
 		);
-		$surveys = new WP_Query( $args );		
+		$projects = new WP_Query( $args );		
 
 	else : // if not, use all the skills ?>
 
 		<ul id="filterNav" class="clearfix">
 			<li class="allBtn"><a href="#" data-filter="*" class="selected"><?php _e('All', 'themetrust'); ?></a></li>
 			<?php $j=1;
-			$skills = get_terms('skill');
+			$skills = get_terms('classifcations');
 			foreach ($skills as $skill) {
 				$a = '<li><a href="#" data-filter=".'.$skill->slug.'">';
 		    	$a .= $skill->name;					
@@ -64,17 +64,17 @@
 			'posts_per_page' => 200,
 			'post_type' => 'has_surveys'			
 		);
-		$surveys = new WP_Query( $args );
+		$projects = new WP_Query( $args );
 
 	endif; ?>
 	
 	<div class="thumbs masonry">			
-	<?php  while ($surveys->have_posts()) : $surveys->the_post(); ?>
+	<?php  while ($projects->have_posts()) : $projects->the_post(); ?>
 		
 		<?php
 		global $p;				
 		$p = "";
-		$skills = get_the_terms( $post->ID, 'skill');
+		$skills = get_the_terms( $post->ID, 'classifcations');
 		if ($skills) {
 		   foreach ($skills as $skill) {				
 		      $p .= $skill->slug . " ";						
