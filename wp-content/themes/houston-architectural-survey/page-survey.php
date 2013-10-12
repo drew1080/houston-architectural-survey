@@ -13,7 +13,7 @@ Template Name: Survey Page
 </div>
 <?php endif; ?>
 <div id="content" class="full">
-<?php get_template_part( 'part-projects'); ?>
+<?php get_template_part( 'part-surveys'); ?>
 </div>
 
 <?php get_footer(); ?>
