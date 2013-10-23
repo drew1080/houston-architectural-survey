@@ -136,8 +136,34 @@ padding-top: 135px !important;
 	visibility: visible;
 }
 
+#content .has_surveys h2 {
+  display: none;
+}
 
+#content .has_surveys .meta {
+  display: none;
+}
 
+.widget_lc_taxonomy input[type="submit"] {
+  	padding: 3px 10px;
+	font-size: .8em;
+  }
+
+.widget_fastflickrwidget a {
+  width: 75px;
+  height: 75px;
+  display: inline-block;
+  margin: 0 10px 10px 0;
+	}
+
+  
+.widget_fastflickrwidget img {
+	float: left;
+  }
+
+.post h2 {
+  display: none;
+  }
 
 /* iPad Portrait */
 

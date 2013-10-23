@@ -3,7 +3,7 @@ Contributors: mmaunder
 Tags: wordpress, security, wordpress security, security plugin, secure, anti-virus, malware, firewall, antivirus, virus, google safe browsing, phishing, scrapers, hacking, wordfence, securty, secrity, secure, two factor, cellphone sign-in, cellphone signin, cellphone, twofactor, security, secure, htaccess, login, log, users, login alerts, lock, chmod, maintenance, plugin, private, privacy, protection, permissions, 503, base64, injection, code, encode, script, attack, hack, hackers, block, blocked, prevent, prevention, RFI, XSS, CRLF, CSRF, SQL Injection, vulnerability, website security, WordPress security, security log, logging, HTTP log, error log, login security, personal security, infrastructure security, firewall security, front-end security, web server security, proxy security, reverse proxy security, secure website, secure login, two factor security, maximum login security
 Requires at least: 3.3.1
 Tested up to: 3.6.1
-Stable tag: 3.8.4
+Stable tag: 3.8.5
 
 Wordfence Security is a free enterprise class security plugin that includes a firewall, virus scanning, real-time traffic with geolocation and more. 
 
@@ -150,11 +150,14 @@ cause a security hole on your site.
 
 == Changelog ==
 
+= 3.8.5 =
+* Fixed issue that caused Human traffic to not be logged in Wordfence Security live traffic view. 
+
 = 3.8.4 =
 * Removed Wordfence .htaccess because it doesn't offer any security functionality and increases incompatibility.
 * Fixed spelling errors.
-* Added check to see if $_SERVER['HTTP_USER_AGENT'] is defined before using it to suppress large number of warnings on some sites.
-* Changed the way we call admin_url() to the correct syntax.
+* Added check to see if HTTP_USER_AGENT server variable is defined before using it to suppress large number of warnings on some sites.
+* Changed the way we call admin_url to the correct syntax.
 * Correctly escaped HTML on error messages.
 * Fixed issue that generated non-compliant query string.
 * Updated GeoIP database to newest version.
