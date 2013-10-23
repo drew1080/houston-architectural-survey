@@ -3,7 +3,7 @@ Template Name: Home
 */ ?>
 <?php get_header(); ?>
 <div id="content" class="full">
-
+  
 <?php get_template_part( 'part-surveys-home'); ?>
 <?php get_template_part( 'part-featured-pages'); ?>
 <?php get_template_part( 'part-posts-home'); ?>
