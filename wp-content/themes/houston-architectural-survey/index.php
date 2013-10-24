@@ -7,7 +7,7 @@
 	<?php $blog_page_id = of_get_option('ttrust_blog_page'); ?>
 	<?php $blog_page = get_page($blog_page_id); ?>
 	<h1><?php echo 'Blog' ?></h1>
-	<?php $page_description = get_post_meta($blog_page_id, "_ttrust_page_description_value", true); ?>
+    <?php $page_description = get_post_meta($blog_page_id, "_ttrust_page_description_value", true); ?>
 	<?php if ($page_description) : ?>
 		<p><?php echo $page_description; ?></p>
 	<?php endif; ?>

@@ -53,17 +53,17 @@ DirectoryIndex index.php index.html /index.php
 # You can open the BPS 404.php file using the WP Plugins Editor.
 # NOTE: By default WordPress automatically looks in your Theme's folder for a 404.php template file.
 
-ErrorDocument 400 /wp-content/plugins/bulletproof-security/400.php
+ErrorDocument 400 /houston-architectural-survey/wp-content/plugins/bulletproof-security/400.php
 ErrorDocument 401 default
-ErrorDocument 403 /wp-content/plugins/bulletproof-security/403.php
-ErrorDocument 404 /404.php
+ErrorDocument 403 /houston-architectural-survey/wp-content/plugins/bulletproof-security/403.php
+ErrorDocument 404 /houston-architectural-survey/404.php
 
 # DENY ACCESS TO PROTECTED SERVER FILES - .htaccess, .htpasswd and all file names starting with dot
 RedirectMatch 403 /\..*$
 
 # WP-ADMIN/INCLUDES
 RewriteEngine On
-RewriteBase /
+RewriteBase /houston-architectural-survey/
 RewriteRule ^wp-admin/includes/ - [F,L]
 RewriteRule !^wp-includes/ - [S=3]
 RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
@@ -72,7 +72,7 @@ RewriteRule ^wp-includes/theme-compat/ - [F,L]
 
 # WP REWRITE LOOP START
 RewriteEngine On
-RewriteBase /
+RewriteBase /houston-architectural-survey/
 RewriteRule ^index\.php$ - [L]
 
 # REQUEST METHODS FILTERED
@@ -90,22 +90,22 @@ RewriteRule ^(.*)$ - [F,L]
 # Example: If RewriteRule S=5 is deleted than change S=6 to S=5, S=7 to S=6, etc.
 
 # Adminer MySQL management tool data populate
-RewriteCond %{REQUEST_URI} ^/wp-content/plugins/adminer/ [NC]
+RewriteCond %{REQUEST_URI} ^/houston-architectural-survey/wp-content/plugins/adminer/ [NC]
 RewriteRule . - [S=12]
 # Comment Spam Pack MU Plugin - CAPTCHA images not displaying 
-RewriteCond %{REQUEST_URI} ^/wp-content/mu-plugins/custom-anti-spam/ [NC]
+RewriteCond %{REQUEST_URI} ^/houston-architectural-survey/wp-content/mu-plugins/custom-anti-spam/ [NC]
 RewriteRule . - [S=11]
 # Peters Custom Anti-Spam display CAPTCHA Image
-RewriteCond %{REQUEST_URI} ^/wp-content/plugins/peters-custom-anti-spam-image/ [NC] 
+RewriteCond %{REQUEST_URI} ^/houston-architectural-survey/wp-content/plugins/peters-custom-anti-spam-image/ [NC] 
 RewriteRule . - [S=10]
 # Status Updater plugin fb connect
-RewriteCond %{REQUEST_URI} ^/wp-content/plugins/fb-status-updater/ [NC] 
+RewriteCond %{REQUEST_URI} ^/houston-architectural-survey/wp-content/plugins/fb-status-updater/ [NC] 
 RewriteRule . - [S=9]
 # Stream Video Player - Adding FLV Videos Blocked
-RewriteCond %{REQUEST_URI} ^/wp-content/plugins/stream-video-player/ [NC]
+RewriteCond %{REQUEST_URI} ^/houston-architectural-survey/wp-content/plugins/stream-video-player/ [NC]
 RewriteRule . - [S=8]
 # XCloner 404 or 403 error when updating settings
-RewriteCond %{REQUEST_URI} ^/wp-content/plugins/xcloner-backup-and-restore/ [NC]
+RewriteCond %{REQUEST_URI} ^/houston-architectural-survey/wp-content/plugins/xcloner-backup-and-restore/ [NC]
 RewriteRule . - [S=7]
 # BuddyPress Logout Redirect
 RewriteCond %{QUERY_STRING} action=logout&redirect_to=http%3A%2F%2F(.*) [NC]
@@ -129,7 +129,7 @@ RewriteCond %{QUERY_STRING} ^.*(http|https|ftp)(%3A|:)(%2F|/)(%2F|/)(w){0,3}.?(b
 RewriteCond %{THE_REQUEST} ^.*(http|https|ftp)(%3A|:)(%2F|/)(%2F|/)(w){0,3}.?(blogger|picasa|blogspot|tsunami|petapolitik|photobucket|imgur|imageshack|wordpress\.com|img\.youtube|tinypic\.com|upload\.wikimedia|kkc|start-thegame).*$ [NC]
 RewriteRule .* index.php [F,L]
 RewriteCond %{REQUEST_URI} (timthumb\.php|phpthumb\.php|thumb\.php|thumbs\.php) [NC]
-RewriteCond %{HTTP_REFERER} ^.*demo5.local.*
+RewriteCond %{HTTP_REFERER} ^.*houstonarchitecturalsurvey.org.*
 RewriteRule . - [S=1]
 
 # BEGIN BPSQSE BPS QUERY STRING EXPLOITS
@@ -188,7 +188,7 @@ RewriteRule ^(.*)$ - [F,L]
 # END BPSQSE BPS QUERY STRING EXPLOITS
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
+RewriteRule . /houston-architectural-survey/index.php [L]
 # WP REWRITE LOOP END
 
 # DENY BROWSER ACCESS TO THESE FILES 

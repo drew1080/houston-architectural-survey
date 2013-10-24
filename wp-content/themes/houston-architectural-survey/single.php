@@ -19,7 +19,7 @@
 				<?php $post_show_author = of_get_option('ttrust_post_show_author'); ?>
 				<?php $post_show_date = of_get_option('ttrust_post_show_date'); ?>
 				<?php $post_show_category = of_get_option('ttrust_post_show_category'); ?>
-				<?php $post_show_comments = of_get_option('ttrust_post_show_comments'); ?>
+			  <?php /* $post_show_comments = of_get_option('ttrust_post_show_comments'); */?>
 							
 				<?php if($post_show_author || $post_show_date || $post_show_category){ _e('Posted ', 'themetrust'); } ?>					
 				<?php if($post_show_author) { _e('by ', 'themetrust'); the_author_posts_link(); }?>
