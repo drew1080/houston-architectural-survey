@@ -1,6 +1,6 @@
 <div id="surveys" class="clearfix">		
 				
-	<?php $page_skills = get_post_meta($post->ID, "_ttrust_page_classifcations", true); ?>
+	<?php $page_skills = get_post_meta($post->ID, "_ttrust_page_classifications", true); ?>
 	
 	<?php if ($page_skills) : // if there are a limited number of skills set ?>
 		<?php $skill_slugs = ""; $skills = explode(",", $page_skills); ?>
@@ -12,7 +12,7 @@
 				<?php
 				$j=1;					  
 				foreach ($skills as $skill) {				
-					$skill = get_term_by( 'slug', trim(htmlentities($skill)), 'classifcations');
+					$skill = get_term_by( 'slug', trim(htmlentities($skill)), 'classifications');
 					if($skill) {
 						$skill_slug = $skill->slug;				
 
@@ -29,7 +29,7 @@
 			<?php $skill_slugs = substr($skill_slugs, 0, strlen($skill_slugs)-1); ?>
 		<?php else: ?>
 			<?php $skill = $skills[0]; ?>
-			<?php $s = get_term_by( 'name', trim(htmlentities($skill)), 'classifcations'); ?>
+			<?php $s = get_term_by( 'name', trim(htmlentities($skill)), 'classifications'); ?>
 			<?php if($s) { $skill_slugs = $s->slug; } ?>
 		<?php endif;		
 		
@@ -47,7 +47,7 @@
 		<ul id="filterNav" class="clearfix">
 			<li class="allBtn"><a href="#" data-filter="*" class="selected"><?php _e('All', 'themetrust'); ?></a></li>
 			<?php $j=1;
-			$skills = get_terms('classifcations');
+			$skills = get_terms('classifications');
 			foreach ($skills as $skill) {
 				$a = '<li><a href="#" data-filter=".'.$skill->slug.'">';
 		    	$a .= $skill->name;					
@@ -74,7 +74,7 @@
 		<?php
 		global $p;				
 		$p = "";
-		$skills = get_the_terms( $post->ID, 'classifcations');
+		$skills = get_the_terms( $post->ID, 'classifications');
 		if ($skills) {
 		   foreach ($skills as $skill) {				
 		      $p .= $skill->slug . " ";						
