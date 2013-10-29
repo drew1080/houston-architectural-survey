@@ -13,6 +13,19 @@ p, ul, body {
   color: #2b2b2b;
 }
 
+#footer p {
+  color: #b0b0ad;
+}
+
+#footer .right a {
+  color: #b0b0ad;
+}
+
+
+#sidebar {
+  width: 263px;
+}
+
 .home #wrap {
   padding-top: 135px !important;
 }
@@ -31,9 +44,18 @@ p, ul, body {
   color: #9fce66;
 }
 
+#mainNav ul li.current-menu-item a {
+  color: #9fce66 !important;
+}
+
 .single-post #mainNav ul li.current_page_parent a {
   color: #9fce66;
 }
+
+#mainNav ul li.current-post-ancestor a {
+  color: #6a6a6a;
+}
+  
 
 #content.survey {
 	width: 100%;
@@ -157,17 +179,17 @@ p, ul, body {
 	font-size: .8em;
   }
 
-.widget_fastflickrwidget a {
-  width: 65px;
-  height: 65px;
+#fastflickrwidget-2.widget_fastflickrwidget a {
+  width: 80px;
+  height: 80px;
   display: inline-block;
-  margin: 0 8px 4px 0;
-	}
+  margin: 0 3px 4px 4px;
+}
 
   
-.widget_fastflickrwidget img {
+#fastflickrwidget-2.widget_fastflickrwidget img {
 	float: left;
-  }
+}
 
 
 #pageHead h1 {
@@ -176,11 +198,34 @@ p, ul, body {
 
 .single #content p {
   margin: 0 0 12px 0;
-	}
+}
 
 .single #content h3 {
   font-size: 1.1em;
+}
+
+.contactbtn {
+  padding: 7px 11px 7px;
+  font-size: 1em;
+  background: #f0f0f0;
+  color:#7d7d7b;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 1px solid #e2e2e2;
+  border-radius: 2px;
   }
+  
+.contactbtn:hover {
+  background: #9fce66;
+  color: #fff;
+  }
+
+#content .has_surveys h2#related-posts-via-taxonomies-title {
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 18px;
+}
 	
 /* iPad Portrait */
 
