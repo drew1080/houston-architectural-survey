@@ -6,23 +6,6 @@ wp_enqueue_script('has', child_template_directory . '/js/has.js', array('jquery'
 
 include("widgets/taxonomy-dropdown.php");
 
-/*-----------------------------------------------------------------------------------*/
-/* Remove Unwanted Admin Menu Items */
-/*-----------------------------------------------------------------------------------*/
-
-function remove_admin_menu_items() {
-	$remove_menu_items = array(__('Slides'), __('Projects'));
-	global $menu;
-	end ($menu);
-	while (prev($menu)){
-		$item = explode(' ',$menu[key($menu)][0]);
-		if(in_array($item[0] != NULL?$item[0]:"" , $remove_menu_items)){
-		unset($menu[key($menu)]);}
-	}
-}
-
-add_action('admin_menu', 'remove_admin_menu_items');
-
 function has_custom_taxonomy_dropdown( $taxonomy, $taxonomy_singular_name, $class = 'taxonomy-dropdown', $orderby = 'date', $order = 'DESC', $limit = '-1') {
 	$args = array(
 		'orderby' => $orderby,

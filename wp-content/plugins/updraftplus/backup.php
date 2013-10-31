@@ -44,13 +44,30 @@ class UpdraftPlus_Backup {
 		$this->updraft_dir = $updraftplus->backups_dir_location();
 
 		// false means 'tried + failed'; whereas 0 means 'not yet tried'
+		// Disallow binzip on OpenVZ when we're not sure there's plenty of memory
 		if ($this->binzip === 0 && (!defined('UPDRAFTPLUS_PREFERPCLZIP') || UPDRAFTPLUS_PREFERPCLZIP != true) && (!defined('UPDRAFTPLUS_NO_BINZIP') || !UPDRAFTPLUS_NO_BINZIP) && $updraftplus->current_resumption <9) {
-			$updraftplus->log('Checking if we have a zip executable available');
-			$binzip = $updraftplus->find_working_bin_zip();
-			if (is_string($binzip)) {
-				$updraftplus->log("Zip engine: found/will use a binary zip: $binzip");
-				$this->binzip = $binzip;
-				$this->use_zip_object = 'UpdraftPlus_BinZip';
+
+			if (@file_exists('/proc/user_beancounters') && @file_exists('/proc/meminfo') && @is_readable('/proc/meminfo')) {
+				$meminfo = @file_get_contents('/proc/meminfo', false, null, -1, 200);
+				if (is_string($meminfo) && preg_match('/MemTotal:\s+(\d+) kB/', $meminfo, $matches)) {
+					$memory_mb = $matches[1]/1024;
+					# If the report is of a large amount, then we're probably getting the total memory on the hypervisor (this has been observed), and don't really know the VPS's memory
+					$vz_log = "OpenVZ; reported memory: ".round($memory_mb, 1)." Mb";
+					if ($memory_mb < 1024 || $memory_mb > 8192) {
+						$openvz_lowmem = true;
+						$vz_log .= " (will not use BinZip)";
+					}
+					$updraftplus->log($vz_log);
+				}
+			}
+			if (empty($openvz_lowmem)) {
+				$updraftplus->log('Checking if we have a zip executable available');
+				$binzip = $updraftplus->find_working_bin_zip();
+				if (is_string($binzip)) {
+					$updraftplus->log("Zip engine: found/will use a binary zip: $binzip");
+					$this->binzip = $binzip;
+					$this->use_zip_object = 'UpdraftPlus_BinZip';
+				}
 			}
 		}
 
@@ -162,15 +179,19 @@ class UpdraftPlus_Backup {
 			$itext = (empty($this->index)) ? '' : ($this->index+1);
 			$full_path = $this->updraft_dir.'/'.$backup_file_basename.'-'.$whichone.$itext.'.zip';
 			if (file_exists($full_path.'.tmp')) {
-				$sha = sha1_file($full_path.'.tmp');
-				$updraftplus->jobdata_set('sha1-'.$whichone.$this->index, $sha);
-				@rename($full_path.'.tmp', $full_path);
-				$timetaken = max(microtime(true)-$this->zip_microtime_start, 0.000001);
-				$kbsize = filesize($full_path)/1024;
-				$rate = round($kbsize/$timetaken, 1);
-				$updraftplus->log("Created $whichone zip (".$this->index.") - ".round($kbsize,1)." Kb in ".round($timetaken,1)." s ($rate Kb/s) (SHA1 checksum: $sha)");
-				// We can now remove any left-over temporary files from this job
-				
+				if (@filesize($full_path.'.tmp') === 0) {
+					$updraftplus->log("Did not create $whichone zip (".$this->index.") - not needed");
+					@unlink($full_path.'.tmp');
+				} else {
+					$sha = sha1_file($full_path.'.tmp');
+					$updraftplus->jobdata_set('sha1-'.$whichone.$this->index, $sha);
+					@rename($full_path.'.tmp', $full_path);
+					$timetaken = max(microtime(true)-$this->zip_microtime_start, 0.000001);
+					$kbsize = filesize($full_path)/1024;
+					$rate = round($kbsize/$timetaken, 1);
+					$updraftplus->log("Created $whichone zip (".$this->index.") - ".round($kbsize,1)." Kb in ".round($timetaken,1)." s ($rate Kb/s) (SHA1 checksum: $sha)");
+					// We can now remove any left-over temporary files from this job
+				}
 			} elseif ($this->index > $original_index) {
 				$updraftplus->log("Did not create $whichone zip (".$this->index.") - not needed");
 			} else {
@@ -279,17 +300,16 @@ class UpdraftPlus_Backup {
 		}
 
 		$updraftplus->jobdata_set('jobstatus', 'pruning');
-		$updraftplus->log("Retain: beginning examination of existing backup sets");
 
 		// Number of backups to retain - files
-		$updraft_retain = UpdraftPlus_Options::get_updraft_option('updraft_retain', 1);
+		$updraft_retain = UpdraftPlus_Options::get_updraft_option('updraft_retain', 2);
 		$updraft_retain = (is_numeric($updraft_retain)) ? $updraft_retain : 1;
-		$updraftplus->log("Retain files: user setting: number to retain = $updraft_retain");
 
 		// Number of backups to retain - db
 		$updraft_retain_db = UpdraftPlus_Options::get_updraft_option('updraft_retain_db', $updraft_retain);
 		$updraft_retain_db = (is_numeric($updraft_retain_db)) ? $updraft_retain_db : 1;
-		$updraftplus->log("Retain db: user setting: number to retain = $updraft_retain_db");
+
+		$updraftplus->log("Retain: beginning examination of existing backup sets; user setting: retain_files=$updraft_retain, retain_db=$updraft_retain_db");
 
 		// Returns an array, most recent first, of backup sets
 		$backup_history = $updraftplus->get_backup_history();
@@ -299,61 +319,80 @@ class UpdraftPlus_Backup {
 
 		$backupable_entities = $updraftplus->get_backupable_file_entities(true);
 
+		$database_backups_found = array();
+
+		$file_entities_backups_found = array();
+		foreach ($backupable_entities as $entity => $info) {
+			$file_entities_backups_found[$entity] = 0;
+		}
+
 		foreach ($backup_history as $backup_datestamp => $backup_to_examine) {
+
+			$files_to_prune = array();
+
 			// $backup_to_examine is an array of file names, keyed on db/plugins/themes/uploads
 			// The new backup_history array is saved afterwards, so remember to unset the ones that are to be deleted
-			$updraftplus->log("Examining backup set with datestamp: $backup_datestamp");
+			$updraftplus->log(sprintf("Examining backup set with datestamp: %s (%s)", $backup_datestamp, gmdate('M d Y H:i:s', $backup_datestamp)));
 
-			if (isset($backup_to_examine['db'])) {
-				$db_backups_found++;
-				$fname = (is_string($backup_to_examine['db'])) ? $backup_to_examine['db'] : $backup_to_examine['db'][0];
-				$updraftplus->log("$backup_datestamp: this set includes a database (".$fname."); db count is now $db_backups_found");
-				if ($db_backups_found > $updraft_retain_db) {
-					$updraftplus->log("$backup_datestamp: over retain limit ($updraft_retain_db); will delete this database");
-					if (!empty($backup_to_examine['db'])) {
-						foreach ($services as $service => $sd) $this->prune_file($service, $backup_to_examine['db'], $sd[0], $sd[1]);
+			# Databases
+			foreach ($backup_to_examine as $key => $data) {
+				if ('db' != strtolower(substr($key, 0, 2)) || '-size' == substr($key, -5, 5)) continue;
+
+				$database_backups_found[$key] = (empty($database_backups_found[$key])) ? 1 : $database_backups_found[$key] + 1;
+
+				$fname = (is_string($data)) ? $data : $data[0];
+				$updraftplus->log("$backup_datestamp: $key: this set includes a database (".$fname."); db count is now ".$database_backups_found[$key]);
+				if ($database_backups_found[$key] > $updraft_retain_db) {
+					$updraftplus->log("$backup_datestamp: $key: over retain limit ($updraft_retain_db); will delete this database");
+					if (!empty($data)) {
+						foreach ($services as $service => $sd) $this->prune_file($service, $data, $sd[0], $sd[1]);
 					}
-					unset($backup_to_examine['db']);
+					unset($backup_to_examine[$key]);
 					$updraftplus->record_still_alive();
 				}
 			}
 
-			$contains_files = false;
+			foreach ($backupable_entities as $entity => $info) {
+				if (!empty($backup_to_examine[$entity])) {
+					$file_entities_backups_found[$entity]++;
+					if ($file_entities_backups_found[$entity] > $updraft_retain) {
+						$prune_this = $backup_to_examine[$entity];
+						if (is_string($prune_this)) $prune_this = array($prune_this);
+						foreach ($prune_this as $prune_file) {
+							$updraftplus->log("$entity: $backup_datestamp: over retain limit ($updraft_retain); will delete this file ($prune_file)");
+							$files_to_prune[] = $prune_file;
+						}
+						unset($backup_to_examine[$entity]);
+					}
+				}
+			}
+
+			# Actually delete the files
+			foreach ($services as $service => $sd) {
+				$this->prune_file($service, $files_to_prune, $sd[0], $sd[1]);
+				$updraftplus->record_still_alive();
+			}
+
+			// Get new result, post-deletion; anything left in this set?
+			$contains_files = 0;
 			foreach ($backupable_entities as $entity => $info) {
 				if (isset($backup_to_examine[$entity])) {
-					$contains_files = true;
+					$contains_files = 1;
 					break;
 				}
 			}
 
-			if ($contains_files) {
-				$file_backups_found++;
-				$updraftplus->log("$backup_datestamp: this set includes files; fileset count is now $file_backups_found");
-				if ($file_backups_found > $updraft_retain) {
-					$updraftplus->log("$backup_datestamp: over retain limit ($updraft_retain); will delete this file set");
-					foreach ($backupable_entities as $entity => $info) {
-						if (!empty($backup_to_examine[$entity])) {
-							foreach ($services as $service => $sd) $this->prune_file($service, $backup_to_examine[$entity], $sd[0], $sd[1]);
-						}
-						unset($backup_to_examine[$entity]);
-						$updraftplus->record_still_alive();
-					}
-
-				}
-			}
-
-			// Get new result, post-deletion
-			$contains_files = false;
-			foreach ($backupable_entities as $entity => $info) {
-				if (isset($backup_to_examine[$entity])) {
-					$contains_files = true;
+			$contains_db = 0;
+			foreach ($backup_to_examine as $key => $data) {
+				if ('db' == strtolower(substr($key, 0, 2)) && '-size' != substr($key, -5, 5)) {
+					$contains_db = 1;
 					break;
 				}
 			}
 
 			// Delete backup set completely if empty, o/w just remove DB
 			// We search on the four keys which represent data, allowing other keys to be used to track other things
-			if (!$contains_files && !isset($backup_to_examine['db']) ) {
+			if (!$contains_files && !$contains_db) {
 				$updraftplus->log("$backup_datestamp: this backup set is now empty; will remove from history");
 				unset($backup_history[$backup_datestamp]);
 				if (isset($backup_to_examine['nonce'])) {
@@ -368,9 +407,10 @@ class UpdraftPlus_Backup {
 					$updraftplus->log("$backup_datestamp: no nonce record found in the backup set, so cannot delete any remaining log file");
 				}
 			} else {
-				$updraftplus->log("$backup_datestamp: this backup set remains non-empty; will retain in history");
+				$updraftplus->log("$backup_datestamp: this backup set remains non-empty ($contains_files/$contains_db); will retain in history");
 				$backup_history[$backup_datestamp] = $backup_to_examine;
 			}
+		# Loop over backup sets
 		}
 		$updraftplus->log("Retain: saving new backup history (sets now: ".count($backup_history).") and finishing retain operation");
 		UpdraftPlus_Options::update_updraft_option('updraft_backup_history', $backup_history, false);
@@ -1510,7 +1550,7 @@ class UpdraftPlus_Backup {
 						$updraftplus->log(__('A zip error occurred - check your log for more details.', 'updraftplus'), 'warning', 'zipcloseerror');
 						$updraftplus->log("The attempt to close the zip file returned an error (".$zip->last_error."). List of files we were trying to add follows (check their permissions).");
 						foreach ($files_zipadded_since_open as $ffile) {
-							$updraftplus->log("File: ".$ffile['addas']." (exists: ".(int)@file_exists($ffile['file']).", size: ".@filesize($ffile['file']).')');
+							$updraftplus->log("File: ".$ffile['addas']." (exists: ".(int)@file_exists($ffile['file']).", is_readable: ".(int)@is_readable($ffile['file'])." size: ".@filesize($ffile['file']).')');
 						}
 					}
 					$zipfiles_added_thisbatch = 0;
