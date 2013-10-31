@@ -1,24 +1,24 @@
 <div id="surveys" class="clearfix">		
-				
-	<?php $page_skills = get_post_meta($post->ID, "_ttrust_page_classifications", true); ?>
+	<?php const TAXONOMY_FILTER = 'neighborhoods';  ?>
+	<?php $page_taxonomys = get_post_meta($post->ID, "_ttrust_page_classifications", true); ?>
 	
-	<?php if ($page_skills) : // if there are a limited number of skills set ?>
-		<?php $skill_slugs = ""; $skills = explode(",", $page_skills); ?>
+	<?php if ($page_taxonomys) : // if there are a limited number of taxonomys set ?>
+		<?php $taxonomy_slugs = ""; $taxonomys = explode(",", $page_taxonomys); ?>
 
-		<?php if (sizeof($skills) > 1) : // if there is more than one skill, show the filter nav?>	
+		<?php if (sizeof($taxonomys) > 1) : // if there is more than one taxonomy, show the filter nav?>	
 			<ul id="filterNav" class="clearfix">
 				<li class="allBtn"><a href="#" data-filter="*" class="selected"><?php _e('All', 'themetrust'); ?></a></li>
 
 				<?php
 				$j=1;					  
-				foreach ($skills as $skill) {				
-					$skill = get_term_by( 'slug', trim(htmlentities($skill)), 'classifications');
-					if($skill) {
-						$skill_slug = $skill->slug;				
+				foreach ($taxonomys as $taxonomy) {				
+					$taxonomy = get_term_by( 'slug', trim(htmlentities($taxonomy)), TAXONOMY_FILTER);
+					if($taxonomy) {
+						$taxonomy_slug = $taxonomy->slug;				
 
-						$skill_slugs .= $skill_slug . ",";
-		  				$a = '<li><a href="#" data-filter=".'.$skill_slug.'">';
-						$a .= $skill->name;					
+						$taxonomy_slugs .= $taxonomy_slug . ",";
+		  				$a = '<li><a href="#" data-filter=".'.$taxonomy_slug.'">';
+						$a .= $taxonomy->name;					
 						$a .= '</a></li>';
 						echo $a;
 						echo "\n";
@@ -26,11 +26,11 @@
 					}		  
 				}?>
 			</ul>
-			<?php $skill_slugs = substr($skill_slugs, 0, strlen($skill_slugs)-1); ?>
+			<?php $taxonomy_slugs = substr($taxonomy_slugs, 0, strlen($taxonomy_slugs)-1); ?>
 		<?php else: ?>
-			<?php $skill = $skills[0]; ?>
-			<?php $s = get_term_by( 'name', trim(htmlentities($skill)), 'classifications'); ?>
-			<?php if($s) { $skill_slugs = $s->slug; } ?>
+			<?php $taxonomy = $taxonomys[0]; ?>
+			<?php $s = get_term_by( 'name', trim(htmlentities($taxonomy)), TAXONOMY_FILTER); ?>
+			<?php if($s) { $taxonomy_slugs = $s->slug; } ?>
 		<?php endif;		
 		
 		$temp_post = $post;
@@ -38,19 +38,19 @@
 			'ignore_sticky_posts' => 1,
 			'posts_per_page' => 200,
 			'post_type' => 'has_surveys',
-			'skill' => $skill_slugs
+			'taxonomy' => $taxonomy_slugs
 		);
 		$projects = new WP_Query( $args );		
 
-	else : // if not, use all the skills ?>
+	else : // if not, use all the taxonomys ?>
 
 		<ul id="filterNav" class="clearfix">
 			<li class="allBtn"><a href="#" data-filter="*" class="selected"><?php _e('All', 'themetrust'); ?></a></li>
 			<?php $j=1;
-			$skills = get_terms('classifications');
-			foreach ($skills as $skill) {
-				$a = '<li><a href="#" data-filter=".'.$skill->slug.'">';
-		    	$a .= $skill->name;					
+			$taxonomys = get_terms(TAXONOMY_FILTER);
+			foreach ($taxonomys as $taxonomy) {
+				$a = '<li><a href="#" data-filter=".'.$taxonomy->slug.'">';
+		    	$a .= $taxonomy->name;					
 				$a .= '</a></li>';
 				echo $a;
 				echo "\n";
@@ -74,10 +74,10 @@
 		<?php
 		global $p;				
 		$p = "";
-		$skills = get_the_terms( $post->ID, 'classifications');
-		if ($skills) {
-		   foreach ($skills as $skill) {				
-		      $p .= $skill->slug . " ";						
+		$taxonomys = get_the_terms( $post->ID, TAXONOMY_FILTER);
+		if ($taxonomys) {
+		   foreach ($taxonomys as $taxonomy) {				
+		      $p .= $taxonomy->slug . " ";						
 		   }
 		}
 		?>  	
