@@ -5,7 +5,7 @@ Template Name: Survey Page
 
 <?php if(!is_front_page()):?>
 <div id="pageHead">
-	<h1><?php the_title(); ?>TEST 2</h1>
+	<h1><?php the_title(); ?></h1>
 	<?php $page_description = get_post_meta($post->ID, "_ttrust_page_description_value", true); ?>
 	<?php if ($page_description) : ?>
 		<p><?php echo $page_description; ?></p>
