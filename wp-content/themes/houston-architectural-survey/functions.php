@@ -25,4 +25,42 @@ function has_custom_taxonomy_dropdown( $taxonomy, $taxonomy_singular_name, $clas
 		print( '</select>' );
 	}
 }
+
+add_shortcode('survey_list', 'survey_list_func');
+
+function survey_list_func($atts, $content = null) {
+  extract( shortcode_atts( array(
+    'class' => '',
+		'taxonomy' => ''), $atts ) );
+    
+  $survey_list = '<div class="survey-list ' . $class . '">';
+  
+  $taxonomy     = $taxonomy;
+  $orderby      = 'name'; 
+  $show_count   = 1;      // 1 for yes, 0 for no
+  $pad_counts   = 0;      // 1 for yes, 0 for no
+  $hierarchical = 1;      // 1 for yes, 0 for no
+  $title        = '';
+  $echo         = 0;
+
+  $args = array(
+    'taxonomy'     => $taxonomy,
+    'orderby'      => $orderby,
+    'show_count'   => $show_count,
+    'pad_counts'   => $pad_counts,
+    'hierarchical' => $hierarchical,
+    'title_li'     => $title,
+    'echo'     => $echo
+  );
+
+  $survey_list .= '<ul>';
+  $survey_list .= wp_list_categories( $args );
+  $survey_list .= '</ul>';
+  
+  $survey_list .= '</div>';
+
+	return $survey_list; 
+}
+
+
 ?>
