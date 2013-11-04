@@ -30,7 +30,10 @@
 	<div class="thumbs clearfix">			
 		<?php  while ($surveys->have_posts()) : $surveys->the_post(); ?>		
 			<?php get_template_part( 'part-survey-thumb'); ?>
-		<?php endwhile; ?>
+		<?php 
+    endwhile; 
+    wp_reset_postdata();
+    ?>
 				
 	</div>
 </div>
