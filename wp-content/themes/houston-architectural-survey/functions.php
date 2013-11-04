@@ -8,7 +8,7 @@ wp_enqueue_script('has', child_template_directory . '/js/has.js', array('jquery'
 
 include("widgets/taxonomy-dropdown.php");
 
-function has_custom_taxonomy_dropdown( $taxonomy, $taxonomy_singular_name, $class = 'taxonomy-dropdown', $orderby = 'date', $order = 'DESC', $limit = '-1') {
+function has_custom_taxonomy_dropdown( $taxonomy, $taxonomy_singular_name, $class = 'taxonomy-dropdown', $orderby = 'name', $order = 'ASC', $limit = '-1') {
 	$args = array(
 		'orderby' => $orderby,
 		'order' => $order,
@@ -39,6 +39,7 @@ function survey_list_func($atts, $content = null) {
   
   $taxonomy     = $taxonomy;
   $orderby      = 'name'; 
+  $order        = 'ASC';
   $show_count   = 1;      // 1 for yes, 0 for no
   $pad_counts   = 0;      // 1 for yes, 0 for no
   $hierarchical = 1;      // 1 for yes, 0 for no
@@ -48,6 +49,7 @@ function survey_list_func($atts, $content = null) {
   $args = array(
     'taxonomy'     => $taxonomy,
     'orderby'      => $orderby,
+    'order'      => $order,
     'show_count'   => $show_count,
     'pad_counts'   => $pad_counts,
     'hierarchical' => $hierarchical,

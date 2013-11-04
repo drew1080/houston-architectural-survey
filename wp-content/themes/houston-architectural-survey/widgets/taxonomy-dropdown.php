@@ -40,7 +40,7 @@ class Taxonomy_Dropdown_Widget extends WP_Widget {
 		if ( $title )
 			echo $before_title . $title . $after_title;
 			
-		has_custom_taxonomy_dropdown( $taxonomy_slug, $taxonomy_singular_name, 'taxonomy-dropdown-box', 'date', 'DESC', $taxonomy_items_count);
+		has_custom_taxonomy_dropdown( $taxonomy_slug, $taxonomy_singular_name, 'taxonomy-dropdown-box', 'name', 'ASC', $taxonomy_items_count);
 		
 		echo $after_widget;
 	}
