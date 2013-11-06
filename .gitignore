@@ -14,3 +14,5 @@ sitemap.xml.gz
 *.DS_Store
 scripts/logs/github.txt
 wp-content/updraft/log.*
+wp-content/plugins/slider-pro/includes/timthumb/cache/*
+wp-content/plugins/slider-pro/xml/*
