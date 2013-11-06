@@ -175,9 +175,9 @@ p, ul, body {
 }
 
 .widget_lc_taxonomy input[type="submit"] {
-  	padding: 3px 10px;
+  padding: 3px 10px;
 	font-size: .8em;
-  }
+}
 
 #fastflickrwidget-2.widget_fastflickrwidget a {
   width: 80px;
@@ -218,13 +218,17 @@ p, ul, body {
 .contactbtn:hover {
   background: #9fce66;
   color: #fff;
-  }
+}
 
 #content .has_surveys h2#related-posts-via-taxonomies-title {
   display: block;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 18px;
+}
+
+.survey-links {
+  float: right;
 }
 	
 /* iPad Portrait */
