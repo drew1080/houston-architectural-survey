@@ -5,7 +5,7 @@ Template Name: Home
 <div id="content" class="full">
 
 
-<?php get_template_part( 'part-testimonials-home'); ?>
+<?php //get_template_part( 'part-testimonials-home'); ?>
 <div id="homeContent" class="full homeSection clearfix">
 	<?php while (have_posts()) : the_post(); ?>	
 	<div class="inside">
