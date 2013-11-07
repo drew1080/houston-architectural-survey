@@ -230,6 +230,10 @@ p, ul, body {
 .survey-links {
   float: right;
 }
+
+.search-inside {
+  margin-top: 20px;
+}
 	
 /* iPad Portrait */
 

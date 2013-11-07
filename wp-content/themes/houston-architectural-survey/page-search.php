@@ -17,7 +17,7 @@ Template Name: Search Page
 <div id="content" class="<?php echo $bw; ?>">
   <?php get_search_form(); ?>
 	<?php while (have_posts()) : the_post(); ?>	
-	<div class="inside">
+	<div class="inside search-inside">
 	<?php the_content(); ?>	
 	</div>
 	<?php endwhile; ?>	
