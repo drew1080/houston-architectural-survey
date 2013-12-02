@@ -275,4 +275,8 @@ p, ul, body {
     height: 150px !important;
   }
   
+  .minimal-light .slide-buttons {
+    display: none !important;
+  }
+  
 }
