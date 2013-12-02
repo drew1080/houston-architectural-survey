@@ -267,4 +267,12 @@ p, ul, body {
     min-height: 300px;
   }
   
+  .home #wrap {
+    padding-top: 40px!important;
+  }
+  
+  .minimal-light .slide-wrapper {
+    height: 150px;
+  }
+  
 }
