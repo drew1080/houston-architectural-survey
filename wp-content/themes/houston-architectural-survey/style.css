@@ -41,11 +41,11 @@ p, ul, body {
 }
 
 #mainNav ul li.current_page_item a {
-  color: #9fce66;
+  color: #74AC2F;
 }
 
 #mainNav ul li.current-menu-item a {
-  color: #9fce66 !important;
+  color: #74AC2F !important;
 }
 
 .single-post #mainNav ul li.current_page_parent a {
@@ -166,9 +166,6 @@ p, ul, body {
 	visibility: visible;
 }
 
-#content .has_surveys h2 {
-  display: none;
-}
 
 #content .has_surveys .meta {
   display: none;
@@ -196,12 +193,20 @@ p, ul, body {
   line-height: 1.4em;
 }
 
+.single .has_surveys h2 {
+  display: none;
+}
+
 .single #content p {
   margin: 0 0 12px 0;
 }
 
 .single #content h3 {
   font-size: 1.1em;
+}
+
+.has_surveys .date {
+  display: none;
 }
 
 .contactbtn {
