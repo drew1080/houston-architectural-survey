@@ -272,7 +272,7 @@ p, ul, body {
   }
   
   .page .minimal-light .slide-wrapper {
-    height: 150px;
+    height: 150px !important;
   }
   
 }
